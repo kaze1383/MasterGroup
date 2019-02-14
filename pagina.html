@@ -1,0 +1,50 @@
+<html>
+<head>
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js">
+    </script>
+</head>
+<body>
+<h2>Info</h2>
+<form id="user-form">
+    <table>
+        <tr>
+            <td> key:</td>
+            <td><input type="text" name="keyId"/></td>
+        </tr>
+        <tr>
+            <td> SharedSecret:</td>
+            <td><input type="text" name="sharedSecret"/></td>
+        </tr>
+     </table>
+    <input type="submit" value="Submit"/>
+</form>
+
+<div id="msg"></div>
+
+<script>
+ $("#user-form").submit(function(event){
+            event.preventDefault();
+            var $form = $(this);
+            var keyId = $form.find('input[name="keyId"]').val();
+            var url = 'http://localhost:8181/temporalApi/TemporalServlet/'+keyId;
+            var sharedSecret = $form.find('input[name="sharedSecret"]').val();
+            
+
+            $.ajax({
+                type : 'PUT',
+                url : url,
+                contentType: 'application/json',
+                data : JSON.stringify({name: sharedSecret}),
+                success : function(data, status, xhr){
+                   window.location.replace("http://localhost:8181/temporalApi/TemporalServlet/"+keyId);
+                },
+                error: function(xhr, status, error){
+                $('#msg').html('<span style=\'color:red;\'>'+error+'</span>')
+                }
+            });
+        });
+
+</script>
+</body>
+</html>
